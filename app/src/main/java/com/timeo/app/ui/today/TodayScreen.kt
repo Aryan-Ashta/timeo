@@ -58,7 +58,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.timeo.app.BuildConfig
 import com.timeo.app.data.Category
 import com.timeo.app.ui.components.formatClock
 import com.timeo.app.ui.components.formatDuration
@@ -78,7 +77,6 @@ fun TodayScreen(
     onEdit: (Category) -> Unit,
     onAdd: (parentId: Long?) -> Unit,
     onOpenDay: (LocalDate) -> Unit,
-    onSeed: () -> Unit,
     contentPadding: PaddingValues,
 ) {
     val c = LocalTimeo.current
@@ -105,7 +103,7 @@ fun TodayScreen(
             }
         }
         if (state.loaded && state.items.isEmpty()) {
-            item(key = "empty") { EmptyState(onAdd = { onAdd(null) }, onSeed = onSeed) }
+            item(key = "empty") { EmptyState(onAdd = { onAdd(null) }) }
         }
         items(state.items, key = { it.category.id }) { item ->
             val open = expanded[item.category.id] == true
@@ -351,7 +349,7 @@ private fun LiveDot(color: Color) {
 }
 
 @Composable
-private fun EmptyState(onAdd: () -> Unit, onSeed: () -> Unit) {
+private fun EmptyState(onAdd: () -> Unit) {
     val c = LocalTimeo.current
     Column(Modifier.fillMaxWidth().border(1.dp, c.rule).padding(24.dp)) {
         Text("No. 00", style = TimeoType.labelStrong, color = c.text)
@@ -364,22 +362,12 @@ private fun EmptyState(onAdd: () -> Unit, onSeed: () -> Unit) {
             color = c.muted,
         )
         Spacer(Modifier.height(20.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text(
-                "New timer",
-                style = TimeoType.bodyStrong,
-                color = c.background,
-                modifier = Modifier.background(c.text).clickable(onClick = onAdd).padding(horizontal = 16.dp, vertical = 10.dp),
-            )
-            if (BuildConfig.DEBUG) {
-                Text(
-                    "Load sample data",
-                    style = TimeoType.bodyStrong,
-                    color = c.text,
-                    modifier = Modifier.border(1.dp, c.text).clickable(onClick = onSeed).padding(horizontal = 16.dp, vertical = 10.dp),
-                )
-            }
-        }
+        Text(
+            "New timer",
+            style = TimeoType.bodyStrong,
+            color = c.background,
+            modifier = Modifier.background(c.text).clickable(onClick = onAdd).padding(horizontal = 16.dp, vertical = 10.dp),
+        )
     }
 }
 

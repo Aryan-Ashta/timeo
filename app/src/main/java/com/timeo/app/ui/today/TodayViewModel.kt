@@ -6,7 +6,6 @@ import com.timeo.app.data.Category
 import com.timeo.app.data.Repository
 import com.timeo.app.data.Session
 import com.timeo.app.domain.StatsCalculator
-import com.timeo.app.ui.theme.PlateArgb
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -95,6 +94,4 @@ class TodayViewModel(private val repo: Repository) : ViewModel() {
     }
 
     fun toggle(categoryId: Long) = viewModelScope.launch { repo.toggle(categoryId) }
-
-    fun seed() = viewModelScope.launch { repo.seedSampleData(PlateArgb) }
 }

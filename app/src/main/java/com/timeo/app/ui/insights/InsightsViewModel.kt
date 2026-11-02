@@ -67,7 +67,7 @@ class InsightsViewModel(private val repo: Repository) : ViewModel() {
                 weekStart = weekStart,
                 daily = daily,
                 dailyGoalMs = dailyGoal,
-                heatScaleMs = dailyGoal ?: typicalDay(daily.values),
+                heatScaleMs = dailyGoal ?: StatsCalculator.typicalDay(daily.values),
                 weeklyGoalMs = selected?.weeklyGoalMinutes?.let { it * 60_000L },
                 streaks = StatsCalculator.streaks(daily, dailyGoal, today),
                 weekMs = StatsCalculator.sumBetween(daily, StatsCalculator.weekStart(today, weekStart), today),
@@ -76,13 +76,6 @@ class InsightsViewModel(private val repo: Repository) : ViewModel() {
             )
         }.flowOn(Dispatchers.Default)
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), InsightsState())
-
-    /** 90th percentile of active days, so shading adapts to how much time the user usually logs. */
-    private fun typicalDay(values: Collection<Long>): Long {
-        val active = values.filter { it > 0 }.sorted()
-        if (active.isEmpty()) return 60 * 60_000L
-        return maxOf(active[((active.size - 1) * 0.9).toInt()], 30 * 60_000L)
-    }
 
     fun select(id: Long?) {
         selectedId.value = id

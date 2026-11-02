@@ -125,6 +125,13 @@ object StatsCalculator {
         return Streaks(current, maxOf(best, current))
     }
 
+    /** 90th percentile of active days, so heatmap shading adapts to how much time is usually logged. */
+    fun typicalDay(values: Collection<Long>): Long {
+        val active = values.filter { it > 0 }.sorted()
+        if (active.isEmpty()) return 60 * 60_000L
+        return maxOf(active[((active.size - 1) * 0.9).toInt()], 30 * 60_000L)
+    }
+
     /** Heatmap intensity 0..4: by share of the daily goal, or by time buckets without one. */
     fun heatLevel(ms: Long, goalMs: Long?): Int {
         if (ms <= 0) return 0

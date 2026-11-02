@@ -12,15 +12,20 @@ Requires JDK 17 and an Android SDK with platform 35 (`local.properties` → `sdk
 ```bash
 ./gradlew testDebugUnitTest   # stats logic tests
 ./gradlew assembleDebug       # app/build/outputs/apk/debug/app-debug.apk
-adb install -r app/build/outputs/apk/debug/app-debug.apk
+./gradlew assembleRelease     # app/build/outputs/apk/release/app-release.apk (minified)
 ```
+
+Release builds are signed with `keystore/timeo-release.jks`, using the passwords in `keystore.properties`.
+Both are git-ignored, so back them up somewhere safe: updates to an installed release build must be signed
+with the same key. If `keystore.properties` is missing, the release APK is built unsigned.
 
 ## Using it
 
 - **Today**: tap a plate to start or stop its stopwatch, and long-press it to edit. Use `+ sub` / `n sub` to add or show subtimers.
+- **Widgets**: *timeo timers* lists your timers with start/stop buttons and live counters. *timeo heatmap*
+  shows your recent weeks and current streak. Both resize.
 - **Insights**: pick a category (and optionally a subtimer) to see its heatmap, streaks, weekly goal and last 7 days.
   Tap a heatmap square, then *Sessions*, to view, edit or add sessions for that day.
-- Debug builds offer **Load sample data** on the empty state.
 
 Code layout: `data/` (Room entities, DAO, repository), `domain/StatsCalculator.kt` (rollups, midnight
 splitting, streaks, heat levels), `ui/` (Compose screens and theme).

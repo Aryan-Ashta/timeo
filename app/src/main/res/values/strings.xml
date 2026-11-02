@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">timeo</string>
+    <string name="widget_timers_name">timeo timers</string>
+    <string name="widget_timers_description">Start and stop your timers and see today\'s time</string>
+    <string name="widget_heatmap_name">timeo heatmap</string>
+    <string name="widget_heatmap_description">Your recent weeks as a heatmap, with your streak</string>
 </resources>

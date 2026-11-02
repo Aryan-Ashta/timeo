@@ -139,7 +139,6 @@ private fun MainScreen(onOpenDay: (LocalDate) -> Unit) {
                         onEdit = { editor = EditorRequest(category = it) },
                         onAdd = { editor = EditorRequest(parentId = it) },
                         onOpenDay = onOpenDay,
-                        onSeed = today::seed,
                         contentPadding = padding,
                     )
                     else -> InsightsScreen(
